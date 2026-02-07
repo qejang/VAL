@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>To My Pookie</title>
+
+  <link rel="stylesheet" href="style-main.css">
+</head>
+<body>
+
+  <!-- Background video -->
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="images/FRONT.mp4" type="video/mp4">
+    <img src="images/VAL_BGS1.png" alt="Background">
+  </video>
+
+  <!-- Background music -->
+  <audio id="bg-music" loop>
+    <source src="music/COMET.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="container">
+    <div class="gif-row">
+      <img src="images/nubcat.gif" class="pookie-gif">
+      <img src="images/nubcat2.gif" class="pookie-gif">
+      <img src="images/nubcat3.gif" class="pookie-gif">
+    </div>
+
+    <h1>💐 HAPPY VALENTINE'S DAY MY POOKIE!!! 💐</h1>
+    <p class="glow-text">Now, will you be my Valentine, my love?</p>
+    <p class="glow-text">Make your choice 👀</p>
+
+    <div class="choice-buttons">
+      <button id="yesBtn">Yes!</button>
+      <button id="noBtn">No!</button>
+    </div>
+  </div>
+
+  <!-- YES popup -->
+  <div id="yesPopup" class="popup" aria-hidden="true">
+    <div class="popup-content">
+      <p>For life??? 🩵</p>
+      <button id="goLetterBtn">For reals, I Pinky Promise!</button>
+    </div>
+  </div>
+
+  <!-- SECOND popup -->
+  <div id="secondYesPopup" class="popup" aria-hidden="true">
+    <div class="popup-content">
+      <p>Choosing YES means you're stuck with me forever 😈</p>
+      <div class="choice-buttons">
+        <button id="secondYesBtn">Yes</button>
+        <button id="secondNoBtn">No</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL popup -->
+  <div id="thirdPopup" class="popup" aria-hidden="true">
+    <div class="popup-content">
+      <p>That's my girl! Mwaa 🩵</p>
+      <button id="closeThirdBtn">Read My Letter</button>
+    </div>
+  </div>
+
+  <!-- NO popup -->
+  <div id="noPopup" class="popup" aria-hidden="true">
+    <div class="popup-content">
+      <p id="noText">Come on, say yes! 🥺</p>
+      <div class="choice-buttons">
+        <button id="nextNoBtn">NO!</button>
+        <button id="closeNoBtn">Fine I'll say yes</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  const $ = id => document.getElementById(id);
+
+  const yesPopup = $('yesPopup');
+  const secondYesPopup = $('secondYesPopup');
+  const thirdPopup = $('thirdPopup');
+  const noPopup = $('noPopup');
+  const noText = $('noText');
+  const popupContent = noPopup.querySelector('.popup-content');
+
+  const noMessages = [
+    "Why are you saying no?? 😡",
+    "Pretty please?",
+    "PLEASEEEE SAY YESSS",
+    "You really hate me? 😢",
+    "STILL NO???",
+    "Baby please 🥺",
+    "Last chance 😭",
+    "Okay goodbye..."
+  ];
+
+  let noIndex = 0, scale = 1;
+
+  const open = p => (p.style.display='flex', p.setAttribute('aria-hidden','false'));
+  const close = p => (p.style.display='none', p.setAttribute('aria-hidden','true'));
+
+  $('yesBtn').onclick = () => open(yesPopup);
+
+  $('goLetterBtn').onclick = () => {
+    close(yesPopup);
+    open(secondYesPopup);
+  };
+
+  $('secondYesBtn').onclick = () => {
+    close(secondYesPopup);
+    open(thirdPopup);
+  };
+
+  $('secondNoBtn').onclick = () => {
+    close(secondYesPopup);
+    open(yesPopup);
+  };
+
+  $('closeThirdBtn').onclick = () => {
+    window.location.href = "letter.html";
+  };
+
+  $('noBtn').onclick = () => {
+    noIndex = 0;
+    scale = 1;
+    noText.textContent = noMessages[0];
+    popupContent.style.transform = 'scale(1)';
+    open(noPopup);
+  };
+
+  $('nextNoBtn').onclick = () => {
+    scale = Math.min(2, scale + 0.1);
+    popupContent.style.transform = `scale(${scale})`;
+    noIndex++;
+    if (noIndex < noMessages.length) {
+      noText.textContent = noMessages[noIndex];
+    } else close(noPopup);
+  };
+
+  $('closeNoBtn').onclick = () => close(noPopup);
+
+  // Music autoplay fallback
+  const music = $('bg-music');
+  music.play().catch(() =>
+    document.addEventListener('click', () => music.play(), { once:true })
+  );
+});
+</script>
+</body>
+</html>
